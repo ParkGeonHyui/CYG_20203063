@@ -22,8 +22,8 @@ float dist_min, dist_max, dist_raw, dist_prev; // unit: mm
 unsigned long last_sampling_time; // unit: ms
 float scale; // used for pulse duration to distance conversion
 Servo myservo;
-float dist_ema;
-float alpha;
+float dist_ema = 0;
+float a, alpha = 0.5;
 
 void setup() {
 // initialize GPIO pins
@@ -56,10 +56,9 @@ void loop() {
 
 // get a distance reading from the USS
   dist_raw = USS_measure(PIN_TRIG,PIN_ECHO);
-  float a=(dist_raw-_DIST_MIN)/(_DIST_MAX-_DIST_MIN); // 0~1
-   Serial.print(a);
-   myservo.write(_DUTY_MIN+(_DUTY_MAX-_DUTY_MIN)*a);
-   dist_ema = alpha * dist_raw + (1 - alpha) * dist_ema;
+  dist_ema = alpha * dist_raw + (1 - alpha) * dist_ema;
+  a=(dist_ema-_DIST_MIN)/(_DIST_MAX-_DIST_MIN); // 0~1
+  myservo.write(_DUTY_MIN+(_DUTY_MAX-_DUTY_MIN)*a);
 
 // output the read value to the serial port
   Serial.print("Min:100,raw:");

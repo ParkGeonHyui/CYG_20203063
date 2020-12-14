@@ -13,15 +13,15 @@
 #define _DIST_TARGET 255    // [2635] 목표하는 위치
 #define _DIST_MIN 100   //[3050] 거리의 최솟값이 100mm
 #define _DIST_MAX 400                   //[3068] 거리의 최대값 410mm
-#define _ITERM_MAX 100
+#define _ITERM_MAX 120
 
 // Distance sensor
-#define _DIST_ALPHA 0.7   //[3054] 센서 보정정도
+#define _DIST_ALPHA 0.3   //[3054] 센서 보정정도
 // [3131] EMA필터값
 // Servo range
-#define _DUTY_MIN 1350    // [3052] 서보의 최소각도를 microseconds로 표현
-#define _DUTY_NEU 1500    // [3070] 레일플레이트 중립위치를 만드는 서보 duty값
-#define _DUTY_MAX 1650                //[3062] 서보의 최대각도의 microseconds의 값
+#define _DUTY_MIN 1370    // [3052] 서보의 최소각도를 microseconds로 표현
+#define _DUTY_NEU 1470    // [3070] 레일플레이트 중립위치를 만드는 서보 duty값
+#define _DUTY_MAX 1570                //[3062] 서보의 최대각도의 microseconds의 값
 
 // Servo speed control
 #define _SERVO_ANGLE 50   // [3131] 최대 가동범위에 따른 목표 서보 회전각
@@ -35,8 +35,8 @@
 #define _INTERVAL_SERIAL 100  // [3070] 시리얼 플로터 갱신 속도
 
 // PID parameters
-#define _KP 0.3 // [2635] P 이득 비율(?)
-#define _KI 0.005  // [2635] I 이득 비율
+#define _KP 1 // [2635] P 이득 비율(?)
+#define _KI 0.016  // [2635] I 이득 비율
 #define _KD 50
 // [2635] D 이득 비율
 #define X 0
@@ -193,7 +193,7 @@ float ir_distance(void) { // return value unit: mm
   float val; // [3055] 변수 val 선언
   float volt = float(analogRead(PIN_IR)); // [3055] volt변수에 적외선 센서 측정값 입력
   val = ((6762.0 / (volt - 9.0)) - 4.0) * 10.0; // [3055] volt 값 보정
-  return f(val, 66, 280); // [3055] val 리턴
+  return f(val, 66, 300); // [3055] val 리턴
 }
 
 float ir_distance_filtered() { // 김태완 님의 ir_filter 소스를 사용했습니다.
